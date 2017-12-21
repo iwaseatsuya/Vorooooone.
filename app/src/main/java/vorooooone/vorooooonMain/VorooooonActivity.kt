@@ -37,7 +37,7 @@ class  VorooooonActivity : Activity() {
     private var buttonStart: Button? = null
     private var buttonJapanese: Button? = null
     private var buttonEnglish: Button? = null
-    //var mButton: Button? = null
+    private var mButton: Button? = null
 
     private var mUsbManager: UsbManager? = null
     private var mUsbDevice: UsbDevice? = null
@@ -66,11 +66,9 @@ class  VorooooonActivity : Activity() {
         buttonEnglish = findViewById(R.id.button_english)
 
         mTextView = findViewById(R.id.test_view)
-        //mButton = findViewById(R.id.button)
+        mButton = findViewById(R.id.button_permission)
         mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
-        // パーミッション設定
-        permission()
 
         // Arduinoの端末を認識させる
         updateList()
@@ -88,10 +86,9 @@ class  VorooooonActivity : Activity() {
             // 音声認識を開始
             speech()
         }
-
-//        mButton!!.setOnClickListener {
-//         permission()
-//        }
+        mButton!!.setOnClickListener {
+         permission()
+        }
     }
 
     // 結果を受け取るために onActivityResult を設置
@@ -105,7 +102,7 @@ class  VorooooonActivity : Activity() {
             if (candidates.size > 0) {
                 // 認識結果候補で一番有力なものを表示
                 textView!!.text = candidates[0]
-
+                
                 //操作可能な命令であれば接続開始
                 if(OrderCheck( candidates[0] )){
                     connectDevice(droneOrder)
@@ -232,8 +229,8 @@ class  VorooooonActivity : Activity() {
 
         for(i in 0 until orderList.size) {
             //命令音声かの判定
-            if (checkstr.contains(orderList.get(0))) {
-                droneOrder = orderList.get(0)
+            if (checkstr.contains(orderList.get(i))) {
+                droneOrder = orderList.get(i)
                 //num = i
                 orderResult = true //ここでコネクトでもよさげ
                 break
