@@ -26,7 +26,8 @@ import android.support.v7.app.AppCompatActivity
 class  VorooooonActivity : Activity() {
     companion object {
         private val REQUEST_CODE = 1000
-        private val orderList = listOf<String>("上","右","左","下","前","後ろ","10万ボルト")
+        private val orderList = listOf<String>("○","離陸","上","後ろ","前","右","左","10万ボルト",
+                                               "ブーメラン","着","時計回り","半時計周り","強制終了")
     }
 
     private var textView: TextView? = null
@@ -45,7 +46,7 @@ class  VorooooonActivity : Activity() {
 
     //private var num: Byte = 0
     private var num: Int = 0
-    private var droneOrder: String = ""
+    //private var droneOrder: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,11 +103,12 @@ class  VorooooonActivity : Activity() {
             if (candidates.size > 0) {
                 // 認識結果候補で一番有力なものを表示
                 textView!!.text = candidates[0]
-                
+
                 //操作可能な命令であれば接続開始
                 if(OrderCheck( candidates[0] )){
-                    connectDevice(droneOrder)
-                    //connectDevice(num)
+                    //textView!!.text = Integer.toString(num)
+                    //connectDevice(droneOrder)
+                    connectDevice()
                 }
             }
         }
@@ -167,7 +169,7 @@ class  VorooooonActivity : Activity() {
     }
 
     // Arduinoの命令を呼び出す
-    private fun connectDevice(droneOrder: String) {
+    private fun connectDevice() {
         Thread(Runnable {
             val connection = mUsbManager!!.openDevice(mUsbDevice)
             val usb = UsbSerialDevice.createUsbSerialDevice(mUsbDevice, connection)
@@ -189,7 +191,7 @@ class  VorooooonActivity : Activity() {
                 usb.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF)
 
                 // 音声をArduinoに飛ばす
-                send(droneOrder, usb)
+                send( usb )
             }
             connection.close()
         }).start()
@@ -209,30 +211,24 @@ class  VorooooonActivity : Activity() {
     }
 
     //ドローンコントローラに命令を送信
-    private fun send(str: String, usb: UsbSerialDevice) {
-        if (str === "上") {
-            num = 1
-
-            /*多分これ意味ない
-            val bytes = ByteBuffer.allocate(4).putInt(num.toInt()).array()
-             */
+    private fun send( usb: UsbSerialDevice) {
             val bytes = ByteBuffer.allocate(4).putInt(num).array()
 
             usb.write(bytes)
             usb.close()
-        }
+
     }
 
     //命令一覧との照合
     fun OrderCheck(checkstr: String): Boolean{
         var orderResult: Boolean = false
 
-        for(i in 0 until orderList.size) {
+        for(i:Int in 1 until orderList.size) {
             //命令音声かの判定
             if (checkstr.contains(orderList.get(i))) {
-                droneOrder = orderList.get(i)
-                //num = i
-                orderResult = true //ここでコネクトでもよさげ
+                //droneOrder = orderList.get(i)
+                num = i
+                orderResult = true
                 break
             }
         }
@@ -240,6 +236,3 @@ class  VorooooonActivity : Activity() {
     }
 }
 
-/*todo
-命令リストの命令の格納場所と番地をコントローラ側の命令番号と合わせる（例：１で上なら　1番目に"上"）
- */
