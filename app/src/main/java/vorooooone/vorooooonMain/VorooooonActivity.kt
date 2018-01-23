@@ -6,90 +6,126 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.speech.RecognizerIntent
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import java.util.Locale
 import android.hardware.usb.UsbDevice
-import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
 import vorooooone.vorooooone.R
 import vorooooone.felhr.usbserial.UsbSerialDevice
 import vorooooone.felhr.usbserial.UsbSerialInterface
+//import Kotlinx.android.synthetic.main.activity_vorooooone
 
 import java.nio.ByteBuffer
-import java.util.HashMap
 import android.app.PendingIntent
+import android.media.Image
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.widget.ImageView
+import java.util.*
 
 
-class  VorooooonActivity : Activity() {
+class VorooooonActivity : Activity() {
     companion object {
         private val REQUEST_CODE = 1000
-        private val orderList = listOf<String>("○","離陸","上","後ろ","前","右","左","10万ボルト",
-                                               "ブーメラン","着","時計回り","半時計周り","強制終了")
+        private val orderList = listOf<String>("○", "離陸", "上", "後ろ", "前", "右", "左", "10万ボルト",
+                "ブーメラン", "着", "時計回り", "半時計周り", "強制終了")
     }
 
     private var textView: TextView? = null
-    private var languageView: TextView? = null
     private var mTextView: TextView? = null
-    private var lang: Int = 2 //オフラインをデフォルトに
 
-    private var buttonStart: Button? = null
-    private var buttonJapanese: Button? = null
-    private var buttonEnglish: Button? = null
-    private var mButton: Button? = null
+    //private var buttonStart: ImageView? = null
 
     private var mUsbManager: UsbManager? = null
     private var mUsbDevice: UsbDevice? = null
-    private var device: UsbDevice? = null
 
-    //private var num: Byte = 0
-    private var num: Int = 0
-    //private var droneOrder: String = ""
+    /*
+    private var upButton: Button? =null
+    private var frontButton: Button? =null
+    private var l_turnButton: Button? =null
+    private var r_turnButton: Button? =null
+    private var leftButton: Button? =null
+    private var rightButton: Button? =null
+    private var downButton: Button? =null
+    private var rearButton: Button? =null
+    private var stopButton: Button? =null
+    */
+
+    private var orderNumber: Int = 0
+    private var lang: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vorooooon)
 
-        //オフラインをデフォルトに
-        lang = 2
+
+
 
         // 認識結果を表示させる
         textView = findViewById(R.id.text_view)
 
-        //言語の実行モードを表示させる
-        languageView = findViewById(R.id.language_view)
-
-        //各ボタンの設定
-        buttonStart = findViewById(R.id.button_start)
-        buttonJapanese = findViewById(R.id.button_japanese)
-        buttonEnglish = findViewById(R.id.button_english)
-
+        //
         mTextView = findViewById(R.id.test_view)
-        mButton = findViewById(R.id.button_permission)
-        mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
+        //ボタンの設定
+        val buttonStart = findViewById<ImageView>(R.id.button_start)
+        val upButton = findViewById<ImageView>(R.id.UpButton)
+        val frontButton = findViewById<ImageView>(R.id.FrontButton)
+        val r_turnButton = findViewById<ImageView>(R.id.R_turnButton)
+        val l_turnButton = findViewById<ImageView>(R.id.L_turnButton)
+        val leftButton = findViewById<ImageView>(R.id.LeftButton)
+        val rightButton = findViewById<ImageView>(R.id.RightButton)
+        val downButton = findViewById<ImageView>(R.id.DownButton)
+        val rearButton = findViewById<ImageView>(R.id.RearButton)
+        val stopButton = findViewById<ImageView>(R.id.StopButton)
+
+        mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
         // Arduinoの端末を認識させる
         updateList()
+        permission()
 
-        //各ボタンの処理の記述
-        buttonJapanese!!.setOnClickListener {
-            lang = 0
-            languageView!!.text = "モード：日本語での実行"
-        }
-        buttonEnglish!!.setOnClickListener {
-            lang = 1
-            languageView!!.text = "モード：英語での実行"
-        }
+        //ボタンの処理の記述
         buttonStart!!.setOnClickListener {
-            // 音声認識を開始
             speech()
         }
-        mButton!!.setOnClickListener {
-         permission()
+        upButton!!.setOnClickListener {
+            orderNumber = 2
+            connectDevice()
         }
+        frontButton!!.setOnClickListener {
+            orderNumber = 4
+            connectDevice()
+        }
+        r_turnButton!!.setOnClickListener {
+            orderNumber = 10
+            connectDevice()
+        }
+        l_turnButton!!.setOnClickListener {
+            orderNumber = 11
+            connectDevice()
+        }
+        leftButton!!.setOnClickListener {
+            orderNumber = 6
+            connectDevice()
+        }
+        rightButton!!.setOnClickListener {
+            orderNumber = 5
+            connectDevice()
+        }
+        downButton!!.setOnClickListener {
+            orderNumber = 2
+            connectDevice()
+        }
+        rearButton!!.setOnClickListener {
+            orderNumber = 3
+            connectDevice()
+        }
+        stopButton!!.setOnClickListener {
+            orderNumber = 12
+            connectDevice()
+        }
+
     }
 
     // 結果を受け取るために onActivityResult を設置
@@ -105,9 +141,7 @@ class  VorooooonActivity : Activity() {
                 textView!!.text = candidates[0]
 
                 //操作可能な命令であれば接続開始
-                if(OrderCheck( candidates[0] )){
-                    //textView!!.text = Integer.toString(num)
-                    //connectDevice(droneOrder)
+                if (OrderCheck(candidates[0])) {
                     connectDevice()
                 }
             }
@@ -115,35 +149,7 @@ class  VorooooonActivity : Activity() {
     }
 
 
-//ーーーーーーーーーーーーーーーーここから下はメソッドーーーーーーーーーーーーーーーーーーーーーーー
-
-    private fun speech() {
-        // 音声認識が使えるか確認する
-        try {
-            // 音声認識の　Intent インスタンス
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-
-            if (lang == 0) {
-                // 日本語
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.JAPAN.toString())
-            } else if (lang == 1) {
-                // 英語
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ENGLISH.toString())
-            } else if (lang == 2) {
-                // Off line mode
-                intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
-            } else {
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            }
-
-            intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 100)
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "音声を入力")
-            // インテント発行(google制のダイアログ表示)
-            startActivityForResult(intent, REQUEST_CODE)
-        } catch (e: ActivityNotFoundException) {
-            textView!!.text = "No Activity "
-        }
-    }
+    //ーーーーーーーーーーーーーーーーここから下はメソッドーーーーーーーーーーーーーーーーーーーーーー
 
     // AndroidとArduinoを接続したときに端末情報を呼び込む
     private fun updateList() {
@@ -166,6 +172,64 @@ class  VorooooonActivity : Activity() {
             }
             mTextView!!.text = string
         }
+    }
+
+    //パーミッション設定
+    private fun permission() {
+        if (mUsbDevice == null) {
+            return
+        }
+        // シリアル通信用のパーミッションを取得
+        if (!mUsbManager!!.hasPermission(mUsbDevice)) {
+            mUsbManager!!.requestPermission(mUsbDevice,
+                    PendingIntent.getBroadcast(this@VorooooonActivity, 0, Intent("あ"), 0))
+            return
+        }
+    }
+
+    private fun speech() {
+        // 音声認識が使えるか確認する
+        try {
+            // 音声認識の　Intent インスタンス
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+
+            if (lang == 0) {
+                /*// 英語
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ENGLISH.toString())*/
+
+                // Off line mode
+                intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
+            /*} else if (lang == 1) {
+                // Off line mode
+                intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)*/
+            } else {
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            }
+
+            intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 100)
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "音声を入力")
+            // インテント発行(google制のダイアログ表示)
+            startActivityForResult(intent, REQUEST_CODE)
+        } catch (e: ActivityNotFoundException) {
+            textView!!.text = "No Activity "
+        }
+    }
+
+
+
+    //命令一覧との照合
+    private fun OrderCheck(checkstr: String): Boolean {
+        var orderResult: Boolean = false
+
+        for (i: Int in 1 until orderList.size) {
+            //命令音声かの判定
+            if (checkstr.contains(orderList.get(i))) {
+                orderNumber = i
+                orderResult = true
+                break
+            }
+        }
+        return orderResult
     }
 
     // Arduinoの命令を呼び出す
@@ -191,48 +255,19 @@ class  VorooooonActivity : Activity() {
                 usb.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF)
 
                 // 音声をArduinoに飛ばす
-                send( usb )
+                send(usb)
             }
             connection.close()
         }).start()
     }
 
-    // パーミッション設定
-    private fun permission() {
-        if (mUsbDevice == null) {
-            return
-        }
-        // シリアル通信用のパーミッションを取得
-        if (!mUsbManager!!.hasPermission(mUsbDevice)) {
-            mUsbManager!!.requestPermission(mUsbDevice,
-                    PendingIntent.getBroadcast(this@VorooooonActivity, 0, Intent("あ"), 0))
-            return
-        }
-    }
-
     //ドローンコントローラに命令を送信
-    private fun send( usb: UsbSerialDevice) {
-            val bytes = ByteBuffer.allocate(4).putInt(num).array()
+    private fun send(usb: UsbSerialDevice) {
+        val bytes = ByteBuffer.allocate(4).putInt(orderNumber).array()
 
-            usb.write(bytes)
-            usb.close()
+        usb.write(bytes)
+        usb.close()
 
-    }
-
-    //命令一覧との照合
-    fun OrderCheck(checkstr: String): Boolean{
-        var orderResult: Boolean = false
-
-        for(i:Int in 1 until orderList.size) {
-            //命令音声かの判定
-            if (checkstr.contains(orderList.get(i))) {
-                //droneOrder = orderList.get(i)
-                num = i
-                orderResult = true
-                break
-            }
-        }
-        return orderResult
     }
 }
 

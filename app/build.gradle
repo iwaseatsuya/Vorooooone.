@@ -31,3 +31,14 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+dependencies {
+    compile 'org.jetbrains.anko:anko-sdk15:0.8.3'
+    compile 'org.jetbrains.anko:anko-support-v4:0.8.3'
+    compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3'
+
+    // 0.9だとPreviewが動かない
+    compile 'org.jetbrains.anko:anko-sdk15:0.9'
+    compile 'org.jetbrains.anko:anko-support-v4:0.9'
+    compile 'org.jetbrains.anko:anko-appcompat-v7:0.9'
+}
