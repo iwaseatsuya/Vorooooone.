@@ -8,22 +8,13 @@
     android:gravity="center"
     tools:context=".vorooooonMain.VorooooonActivity">
 
+    vorooooone.vorooooonMain.PushButton
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="音声認識を開始します"
         android:textSize="30sp" />
-
-    <ImageButton
-        android:id="@+id/button_start"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/mic"
-        android:scaleType="centerCrop" />
-
-
     <TextView
         android:id="@+id/Connection_Status"
         android:layout_width="wrap_content"
@@ -35,29 +26,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageButton
+        <vorooooone.vorooooonMain.AlphaButton
             android:id="@+id/UpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="250px"
-            android:background="#FFFFFF"
-            android:src="@drawable/up" />
-
+            android:layout_marginRight="320px"
+            android:background="@drawable/up"
+            />
         <ImageButton
             android:id="@+id/FrontButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="250px"
+            android:layout_marginLeft="320px"
             android:background="#FFFFFF"
             android:src="@drawable/up" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageButton
             android:id="@+id/L_turnButton"
             android:layout_width="wrap_content"
@@ -72,7 +59,13 @@
             android:layout_marginRight="100px"
             android:background="#FFFFFF"
             android:src="@drawable/right" />
-
+        <ImageButton
+            android:id="@+id/button_start"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="#FFFFFF"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mic"/>
         <ImageButton
             android:id="@+id/LeftButton"
             android:layout_width="wrap_content"
@@ -87,38 +80,49 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:src="@drawable/right" />
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageButton
             android:id="@+id/DownButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="250px"
+            android:layout_marginRight="320px"
             android:background="#FFFFFF"
             android:src="@drawable/down" />
         <ImageButton
             android:id="@+id/RearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="250px"
+            android:layout_marginLeft="320px"
             android:background="#FFFFFF"
             android:src="@drawable/down" />
-
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/StopButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="500dp"
-        android:background="#FFFFFF"
-        android:src="@drawable/stop" />
-
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/TakeOffButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:background="#FFFFFF"
+            android:src="@drawable/takeoff" />
+        <ImageButton
+            android:id="@+id/LandingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:src="@drawable/landing" />
+        <ImageButton
+            android:id="@+id/StopButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="100dp"
+            android:background="#FFFFFF"
+            android:src="@drawable/stop" />
+    </LinearLayout>
 </LinearLayout>

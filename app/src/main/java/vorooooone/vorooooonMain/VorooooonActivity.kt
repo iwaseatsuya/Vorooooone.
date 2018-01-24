@@ -15,15 +15,15 @@ import vorooooone.felhr.usbserial.UsbSerialInterface
 
 import java.nio.ByteBuffer
 import android.app.PendingIntent
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
-
 
 class VorooooonActivity : Activity() {
     companion object {
         private val REQUEST_CODE = 1000
-        private val orderList = listOf<String>("○", "離陸", "上", "後ろ", "前", "右", "左", "10万ボルト",
-                "ブーメラン", "着", "時計回り", "半時計周り", "強制終了")
+        private val orderList = listOf<String>("○", "離陸", "上", "前", "後ろ", "右", "左", "光",
+                "ブーメラン", "着", "時計回り", "半時計周り", "強制終了","な音","高速移動","雷","かめはめ波")
     }
 
     private var textView: TextView? = null
@@ -39,6 +39,10 @@ class VorooooonActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vorooooon)
 
+        val iv = ImageView(this)
+        iv.setImageResource(R.drawable.manual3)
+
+
         // 認識結果を表示させる
         textView = findViewById(R.id.text_view)
 
@@ -47,7 +51,7 @@ class VorooooonActivity : Activity() {
 
         //各ボタンの設定
         val buttonStart = findViewById<ImageView>(R.id.button_start)
-        val upButton = findViewById<ImageView>(R.id.UpButton)
+        val upButton = findViewById<vorooooone.vorooooonMain.AlphaButton>(R.id.UpButton)
         val frontButton = findViewById<ImageView>(R.id.FrontButton)
         val r_turnButton = findViewById<ImageView>(R.id.R_turnButton)
         val l_turnButton = findViewById<ImageView>(R.id.L_turnButton)
@@ -56,6 +60,8 @@ class VorooooonActivity : Activity() {
         val downButton = findViewById<ImageView>(R.id.DownButton)
         val rearButton = findViewById<ImageView>(R.id.RearButton)
         val stopButton = findViewById<ImageView>(R.id.StopButton)
+        val takeofButton = findViewById<ImageView>(R.id.TakeOffButton)
+        val landingButton = findViewById<ImageView>(R.id.LandingButton)
 
         mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
@@ -68,41 +74,55 @@ class VorooooonActivity : Activity() {
             speech()
         }
         upButton!!.setOnClickListener {
-            orderNumber = 2
-            connectDevice()
+            orderNumber = orderList.indexOf("上")
+            //connectDevice()
         }
         frontButton!!.setOnClickListener {
-            orderNumber = 4
+            orderNumber = orderList.indexOf("前")
             connectDevice()
         }
         r_turnButton!!.setOnClickListener {
-            orderNumber = 10
+            orderNumber = orderList.indexOf("時計回り")
             connectDevice()
         }
         l_turnButton!!.setOnClickListener {
-            orderNumber = 11
+            orderNumber = orderList.indexOf("反時計回り")
             connectDevice()
         }
         leftButton!!.setOnClickListener {
-            orderNumber = 6
+            orderNumber = orderList.indexOf("左")
             connectDevice()
         }
         rightButton!!.setOnClickListener {
-            orderNumber = 5
+            orderNumber =  orderList.indexOf("右")
             connectDevice()
         }
         downButton!!.setOnClickListener {
-            orderNumber = 2
+            orderNumber = orderList.indexOf("下")
             connectDevice()
         }
         rearButton!!.setOnClickListener {
-            orderNumber = 3
+            orderNumber = orderList.indexOf("後ろ")
             connectDevice()
         }
         stopButton!!.setOnClickListener {
-            orderNumber = 12
+            orderNumber = orderList.indexOf("強制停止")
             connectDevice()
         }
+        takeofButton!!.setOnClickListener{
+            orderNumber = orderList.indexOf("離陸")
+            connectDevice()
+        }
+        landingButton!!.setOnClickListener{
+            orderNumber = orderList.indexOf("着")
+            connectDevice()
+        }
+        //てす
+        takeofButton!!.setOnLongClickListener{
+            //setContentView(iv)
+            return@setOnLongClickListener true
+        }
+
 
     }
 
@@ -125,7 +145,6 @@ class VorooooonActivity : Activity() {
             }
         }
     }
-
 
     //ーーーーーーーーーーーーーーーーここから下はメソッドーーーーーーーーーーーーーーーーーーーーーー
 
@@ -185,7 +204,7 @@ class VorooooonActivity : Activity() {
             textView!!.text = "No Activity "
         }
     }
-    
+
     //命令一覧との照合
     private fun OrderCheck(checkstr: String): Boolean {
         var orderResult: Boolean = false
@@ -236,7 +255,6 @@ class VorooooonActivity : Activity() {
 
         usb.write(bytes)
         usb.close()
-
     }
 }
 
