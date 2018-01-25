@@ -8,7 +8,6 @@
     android:gravity="center"
     tools:context=".vorooooonMain.VorooooonActivity">
 
-    vorooooone.vorooooonMain.PushButton
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
@@ -26,103 +25,103 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <vorooooone.vorooooonMain.AlphaButton
+        <Button.PushButton
             android:id="@+id/UpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="320px"
             android:background="@drawable/up"
             />
-        <ImageButton
+        <Button.PushButton
             android:id="@+id/FrontButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="320px"
-            android:background="#FFFFFF"
-            android:src="@drawable/up" />
+            android:background="@drawable/up"
+           />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageButton
+        <Button.PushButton
             android:id="@+id/L_turnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:src="@drawable/left" />
-        <ImageButton
+            android:background="@drawable/left"
+            />
+        <Button.PushButton
             android:id="@+id/R_turnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100px"
             android:layout_marginRight="100px"
-            android:background="#FFFFFF"
-            android:src="@drawable/right" />
-        <ImageButton
+            android:background="@drawable/right"
+            />
+        <Button.PushButton
             android:id="@+id/button_start"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/mic"
             android:scaleType="centerCrop"
-            android:src="@drawable/mic"/>
-        <ImageButton
+            />
+        <Button.PushButton
             android:id="@+id/LeftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100px"
             android:layout_marginRight="100px"
-            android:background="#FFFFFF"
-            android:src="@drawable/left" />
-        <ImageButton
+            android:background="@drawable/left"
+            />
+        <Button.PushButton
             android:id="@+id/RightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:src="@drawable/right" />
+            android:background="@drawable/right"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageButton
+        <Button.PushButton
             android:id="@+id/DownButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="320px"
-            android:background="#FFFFFF"
-            android:src="@drawable/down" />
-        <ImageButton
+            android:background="@drawable/down"
+            />
+        <Button.PushButton
             android:id="@+id/RearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="320px"
-            android:background="#FFFFFF"
-            android:src="@drawable/down" />
+            android:background="@drawable/down"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageButton
+        <Button.PushButton
             android:id="@+id/TakeOffButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="200dp"
-            android:background="#FFFFFF"
-            android:src="@drawable/takeoff" />
-        <ImageButton
+            android:background="@drawable/takeoff"
+            />
+        <Button.PushButton
             android:id="@+id/LandingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:src="@drawable/landing" />
-        <ImageButton
+            android:background="@drawable/landing"
+            />
+        <Button.PushButton
             android:id="@+id/StopButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="100dp"
-            android:background="#FFFFFF"
-            android:src="@drawable/stop" />
+            android:background="@drawable/stop"
+           />
     </LinearLayout>
 </LinearLayout>
