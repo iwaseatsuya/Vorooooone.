@@ -25,103 +25,94 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button.PushButton
+        <vorooooone.Button.AlphaButton
             android:id="@+id/UpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="320px"
             android:background="@drawable/up"
             />
-        <Button.PushButton
+        <vorooooone.Button.AlphaButton
             android:id="@+id/FrontButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="320px"
-            android:background="@drawable/up"
-           />
+            android:background="@drawable/up" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button.PushButton
+        <vorooooone.Button.AlphaButton
             android:id="@+id/L_turnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/left"
-            />
-        <Button.PushButton
+            android:background="@drawable/left" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/R_turnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100px"
+            android:layout_marginLeft="130px"
             android:layout_marginRight="100px"
-            android:background="@drawable/right"
-            />
-        <Button.PushButton
+
+            android:background="@drawable/right" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/button_start"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/mic"
-            android:scaleType="centerCrop"
-            />
-        <Button.PushButton
+            android:scaleType="centerCrop"/>
+        <vorooooone.Button.AlphaButton
             android:id="@+id/LeftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100px"
-            android:layout_marginRight="100px"
-            android:background="@drawable/left"
-            />
-        <Button.PushButton
+            android:layout_marginRight="130px"
+
+            android:background="@drawable/left" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/RightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/right"
-            />
+            android:background="@drawable/right" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button.PushButton
+        <vorooooone.Button.AlphaButton
             android:id="@+id/DownButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="320px"
-            android:background="@drawable/down"
-            />
-        <Button.PushButton
+            android:background="@drawable/down" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/RearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="320px"
-            android:background="@drawable/down"
-            />
+            android:background="@drawable/down" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button.PushButton
+        <vorooooone.Button.AlphaButton
             android:id="@+id/TakeOffButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="200dp"
-            android:background="@drawable/takeoff"
-            />
-        <Button.PushButton
+            android:background="@drawable/takeoff" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/LandingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/landing"
-            />
-        <Button.PushButton
+            android:background="@drawable/landing" />
+        <vorooooone.Button.AlphaButton
             android:id="@+id/StopButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="100dp"
-            android:background="@drawable/stop"
-           />
+            android:background="@drawable/stop" />
     </LinearLayout>
 </LinearLayout>
