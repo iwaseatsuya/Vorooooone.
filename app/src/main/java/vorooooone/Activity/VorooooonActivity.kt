@@ -16,8 +16,14 @@ import vorooooone.felhr.usbserial.UsbSerialInterface
 import java.nio.ByteBuffer
 import android.app.PendingIntent
 import android.support.v7.app.AppCompatActivity
+import android.view.MotionEvent
 import android.widget.ImageView
 import vorooooone.Button.AlphaButton
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.system.Os.close
+import android.view.View
+
 
 class VorooooonActivity : Activity() {
     companion object {
@@ -40,7 +46,7 @@ class VorooooonActivity : Activity() {
         setContentView(R.layout.activity_vorooooon)
 
         val iv = ImageView(this)
-        iv.setImageResource(R.drawable.manual3)
+        iv.setImageResource(R.drawable.manual)
 
 
         // 認識結果を表示させる
@@ -62,6 +68,7 @@ class VorooooonActivity : Activity() {
         val stopButton = findViewById<AlphaButton>(R.id.StopButton)
         val takeofButton = findViewById<AlphaButton>(R.id.TakeOffButton)
         val landingButton = findViewById<AlphaButton>(R.id.LandingButton)
+        val helpButton =  findViewById<AlphaButton>(R.id.HelpButton)
 
         mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
@@ -117,10 +124,19 @@ class VorooooonActivity : Activity() {
             orderNumber = orderList.indexOf("着")
             connectDevice()
         }
+        helpButton!!.setOnClickListener{
+            setContentView(iv)
+            iv!!.setOnClickListener{
+                startActivity(Intent(this@VorooooonActivity, VorooooonActivity::class.java))
+            }
+        }
         //てす
         takeofButton!!.setOnLongClickListener{
-            //setContentView(iv)
-            return@setOnLongClickListener true
+            setContentView(iv)
+           iv!!.setOnClickListener{
+               startActivity(Intent(this@VorooooonActivity, VorooooonActivity::class.java))
+            }
+            return@setOnLongClickListener false
         }
 
 
@@ -129,7 +145,6 @@ class VorooooonActivity : Activity() {
     // 結果を受け取るために onActivityResult を設置
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             // 認識結果を ArrayList で取得
             val candidates = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
@@ -166,6 +181,7 @@ class VorooooonActivity : Activity() {
                 } else {
                     string += "\n"
                 }
+
             }
             connection_view!!.text = string
         }

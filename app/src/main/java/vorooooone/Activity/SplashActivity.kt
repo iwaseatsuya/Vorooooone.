@@ -24,51 +24,44 @@ class SplashActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // タイトルを非表示にします。
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        // splash.xmlをViewに指定します。
         setContentView(R.layout.splash)
 
         mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
         val splashView = findViewById<ImageView>(R.id.splashview)
 
-        AlertDialog.Builder(this)
-                .setTitle("Androidとコントローラを接続してください。")
-                .setPositiveButton("ok"){ dialog, which ->
-                }.show()
+        splashView!!.setOnClickListener{
+            //USB接続がされているか確認
+            /*if (mUsbManager!!.deviceList == null || mUsbManager!!.deviceList.isEmpty()) {
+                //接続を促す
+                AlertDialog.Builder(this)
+                        .setTitle("Androidとコントローラを接続してください。")
+                        .setPositiveButton("ok") { dialog, which ->
+                        }.show()
+            }else { run() }*/
+            //テス用
+            startActivity(Intent(this@SplashActivity, VorooooonActivity::class.java))
+            this@SplashActivity.finish()
+        }
 
-        splashView!!.setOnClickListener{ run() }
-
-        permission()
+        //permission()
 
     }
 
     fun run() {
-        // スプラッシュ完了後に実行するActivityを指定します
+        // スプラッシュ完了後に実行するActivityを指定
         val deviceList = mUsbManager!!.deviceList
 
         if (deviceList == null || deviceList.isEmpty()) {
-
-            // ここにアラート表示して、OKボタン押したら下のアクティビティ遷移処理が走ればOKなはずだが、OK押す前に画面が遷移してしまうので
-            // onCreatにのみ書いている
-//            AlertDialog.Builder(this)
-//                    .setTitle("Androidとコントローラを接続してください。")
-//                    .setPositiveButton("ok"){ dialog, which ->
-//                    }.show()
-
             startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
-
         } else {
             for (name in deviceList.keys) {
                 if (deviceList[name]!!.getVendorId() == 4292) {
                     mUsbDevice = deviceList[name]
-                } else {
-
                 }
             }
             startActivity(Intent(this@SplashActivity, VorooooonActivity::class.java))
-            // SplashActivityを終了させます。
             this@SplashActivity.finish()
         }
     }

@@ -8,12 +8,26 @@
     android:gravity="center"
     tools:context=".vorooooonMain.VorooooonActivity">
 
-    <TextView
-        android:id="@+id/text_view"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="音声認識を開始します"
-        android:textSize="30sp" />
+        android:orientation="horizontal">
+
+        <vorooooone.Button.AlphaButton
+            android:id="@+id/HelpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/help"
+            android:layout_marginRight="400px"/>
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音声認識を開始します"
+            android:layout_marginRight="400px"
+            android:textSize="30sp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/Connection_Status"
         android:layout_width="wrap_content"
@@ -58,8 +72,8 @@
             android:background="@drawable/right" />
         <vorooooone.Button.AlphaButton
             android:id="@+id/button_start"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/mic"
             android:scaleType="centerCrop"/>
         <vorooooone.Button.AlphaButton
@@ -96,12 +110,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="100px"
         android:orientation="horizontal">
         <vorooooone.Button.AlphaButton
             android:id="@+id/TakeOffButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="200dp"
+            android:layout_marginLeft="200px"
             android:background="@drawable/takeoff" />
         <vorooooone.Button.AlphaButton
             android:id="@+id/LandingButton"
@@ -110,9 +125,8 @@
             android:background="@drawable/landing" />
         <vorooooone.Button.AlphaButton
             android:id="@+id/StopButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/stop" />
     </LinearLayout>
 </LinearLayout>
