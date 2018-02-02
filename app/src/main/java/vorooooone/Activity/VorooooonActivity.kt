@@ -16,20 +16,16 @@ import vorooooone.felhr.usbserial.UsbSerialInterface
 import java.nio.ByteBuffer
 import android.app.PendingIntent
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
 import vorooooone.Button.AlphaButton
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.system.Os.close
-import android.view.View
 
 
 class VorooooonActivity : Activity() {
     companion object {
         private val REQUEST_CODE = 1000
-        private val orderList = listOf<String>("○", "離陸", "上", "前", "後ろ", "右", "左", "光",
-                "ブーメラン", "着", "時計回り", "半時計周り", "強制終了","な音","高速移動","雷","かめはめ波")
+        private val orderList = listOf<String>("○", "離陸", "上","下", "前", "後ろ", "右", "左", "着",
+                                "時計回り", "半時計周り", "強制終了", "光","ブーメラン","な音","高速移動","雷","かめはめ波")
     }
 
     private var textView: TextView? = null
@@ -55,91 +51,37 @@ class VorooooonActivity : Activity() {
         //接続状態の表示
         connection_view = findViewById(R.id.Connection_Status)
 
-        //各ボタンの設定
-        val buttonStart = findViewById<AlphaButton>(R.id.button_start)
-        val upButton = findViewById<AlphaButton>(R.id.UpButton)
-        val frontButton = findViewById<AlphaButton>(R.id.FrontButton)
-        val r_turnButton = findViewById<AlphaButton>(R.id.R_turnButton)
-        val l_turnButton = findViewById<AlphaButton>(R.id.L_turnButton)
-        val leftButton = findViewById<AlphaButton>(R.id.LeftButton)
-        val rightButton = findViewById<AlphaButton>(R.id.RightButton)
-        val downButton = findViewById<AlphaButton>(R.id.DownButton)
-        val rearButton = findViewById<AlphaButton>(R.id.RearButton)
-        val stopButton = findViewById<AlphaButton>(R.id.StopButton)
-        val takeofButton = findViewById<AlphaButton>(R.id.TakeOffButton)
-        val landingButton = findViewById<AlphaButton>(R.id.LandingButton)
-        val helpButton =  findViewById<AlphaButton>(R.id.HelpButton)
-
         mUsbManager = getSystemService(AppCompatActivity.USB_SERVICE) as UsbManager
 
         // Arduinoの端末を認識させる
         updateList()
         permission()
 
-        //ボタンの処理の記述
-        buttonStart!!.setOnClickListener {
-            speech()
+        val buttonList =listOf<AlphaButton>(
+                findViewById<AlphaButton>(R.id.button_start),findViewById<AlphaButton>(R.id.TakeOffButton),
+                findViewById<AlphaButton>(R.id.UpButton),findViewById<AlphaButton>(R.id.DownButton),
+                findViewById<AlphaButton>(R.id.FrontButton),findViewById<AlphaButton>(R.id.RearButton),
+                findViewById<AlphaButton>(R.id.RightButton), findViewById<AlphaButton>(R.id.LeftButton),
+                findViewById<AlphaButton>(R.id.LandingButton), findViewById<AlphaButton>(R.id.R_turnButton),
+                findViewById<AlphaButton>(R.id.L_turnButton), findViewById<AlphaButton>(R.id.StopButton),
+                findViewById<AlphaButton>(R.id.HelpButton))
+
+        //ボタンの設定
+        buttonList[0].setOnClickListener { speech() }
+
+        for (i: Int in 1 until(buttonList.size-1) ){
+            buttonList[i].setOnClickListener {
+                    orderNumber = i
+                    connectDevice()
+            }
         }
-        upButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("上")
-            connectDevice()
-        }
-        frontButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("前")
-            connectDevice()
-        }
-        r_turnButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("時計回り")
-            connectDevice()
-        }
-        l_turnButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("反時計回り")
-            connectDevice()
-        }
-        leftButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("左")
-            connectDevice()
-        }
-        rightButton!!.setOnClickListener {
-            orderNumber =  orderList.indexOf("右")
-            connectDevice()
-        }
-        downButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("下")
-            connectDevice()
-        }
-        rearButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("後ろ")
-            connectDevice()
-        }
-        stopButton!!.setOnClickListener {
-            orderNumber = orderList.indexOf("強制停止")
-            connectDevice()
-        }
-        takeofButton!!.setOnClickListener{
-            orderNumber = orderList.indexOf("離陸")
-            connectDevice()
-        }
-        landingButton!!.setOnClickListener{
-            orderNumber = orderList.indexOf("着")
-            connectDevice()
-        }
-        helpButton!!.setOnClickListener{
+
+        buttonList[12]!!.setOnClickListener {
             setContentView(iv)
-            iv!!.setOnClickListener{
+            iv!!.setOnClickListener {
                 startActivity(Intent(this@VorooooonActivity, VorooooonActivity::class.java))
             }
         }
-        //てす
-        takeofButton!!.setOnLongClickListener{
-            setContentView(iv)
-           iv!!.setOnClickListener{
-               startActivity(Intent(this@VorooooonActivity, VorooooonActivity::class.java))
-            }
-            return@setOnLongClickListener false
-        }
-
-
     }
 
     // 結果を受け取るために onActivityResult を設置
@@ -154,7 +96,7 @@ class VorooooonActivity : Activity() {
                 textView!!.text = candidates[0]
 
                 //操作可能な命令であれば接続開始
-                if (OrderCheck(candidates[0])) {
+                if (orderCheck(candidates[0])) {
                     connectDevice()
                 }
             }
@@ -222,12 +164,12 @@ class VorooooonActivity : Activity() {
     }
 
     //命令一覧との照合
-    private fun OrderCheck(checkstr: String): Boolean {
-        var orderResult: Boolean = false
+    private fun orderCheck(checkstr: String): Boolean {
+        var orderResult = false
 
         for (i: Int in 1 until orderList.size) {
             //命令音声かの判定
-            if (checkstr.contains(orderList.get(i))) {
+            if (checkstr.contains(orderList[i])) {
                 orderNumber = i
                 orderResult = true
                 break
