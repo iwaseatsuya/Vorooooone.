@@ -16,9 +16,8 @@ import vorooooone.felhr.usbserial.UsbSerialInterface
 import java.nio.ByteBuffer
 import android.app.PendingIntent
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.ImageView
-import vorooooone.Button.AlphaButton
+import vorooooone.Button.PushButton
 
 
 class VorooooonActivity : Activity() {
@@ -36,6 +35,7 @@ class VorooooonActivity : Activity() {
 
     private var orderNumber: Int = 0
     private var lang: Int = 0
+    private val droneID: Int = 4292
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +57,14 @@ class VorooooonActivity : Activity() {
         updateList()
         permission()
 
-        val buttonList =listOf<AlphaButton>(
-                findViewById<AlphaButton>(R.id.button_start),findViewById<AlphaButton>(R.id.TakeOffButton),
-                findViewById<AlphaButton>(R.id.UpButton),findViewById<AlphaButton>(R.id.DownButton),
-                findViewById<AlphaButton>(R.id.FrontButton),findViewById<AlphaButton>(R.id.RearButton),
-                findViewById<AlphaButton>(R.id.RightButton), findViewById<AlphaButton>(R.id.LeftButton),
-                findViewById<AlphaButton>(R.id.LandingButton), findViewById<AlphaButton>(R.id.R_turnButton),
-                findViewById<AlphaButton>(R.id.L_turnButton), findViewById<AlphaButton>(R.id.StopButton),
-                findViewById<AlphaButton>(R.id.HelpButton))
+        val buttonList =listOf<PushButton>(
+                findViewById<PushButton>(R.id.button_start),findViewById<PushButton>(R.id.TakeOffButton),
+                findViewById<PushButton>(R.id.UpButton),findViewById<PushButton>(R.id.DownButton),
+                findViewById<PushButton>(R.id.FrontButton),findViewById<PushButton>(R.id.RearButton),
+                findViewById<PushButton>(R.id.RightButton), findViewById<PushButton>(R.id.LeftButton),
+                findViewById<PushButton>(R.id.LandingButton), findViewById<PushButton>(R.id.R_turnButton),
+                findViewById<PushButton>(R.id.L_turnButton), findViewById<PushButton>(R.id.StopButton),
+                findViewById<PushButton>(R.id.HelpButton))
 
         //ボタンの設定
         buttonList[0].setOnClickListener { speech() }
@@ -117,7 +117,7 @@ class VorooooonActivity : Activity() {
             for (name in deviceList.keys) {
 
                 string += name
-                if (deviceList[name]!!.getVendorId() == 4292) {
+                if (deviceList[name]!!.getVendorId() == droneID) {
                     string += " (Arduino)\n"
                     mUsbDevice = deviceList[name]
                 } else {
@@ -209,7 +209,8 @@ class VorooooonActivity : Activity() {
 
     //ドローンコントローラに命令を送信
     private fun send(usb: UsbSerialDevice) {
-        val bytes = ByteBuffer.allocate(4).putInt(orderNumber).array()
+        var bytes = ByteBuffer.allocate(4).putInt(orderNumber).array()
+        //var bytes = ByteBuffer.allocate(4).putInt(1).array()
 
         usb.write(bytes)
         usb.close()

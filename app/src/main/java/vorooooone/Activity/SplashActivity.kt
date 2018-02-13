@@ -33,20 +33,19 @@ class SplashActivity : Activity() {
 
         splashView!!.setOnClickListener{
             //USB接続がされているか確認
-            /*if (mUsbManager!!.deviceList == null || mUsbManager!!.deviceList.isEmpty()) {
+            /*
+            if (mUsbManager!!.deviceList == null || mUsbManager!!.deviceList.isEmpty()) {
                 //接続を促す
                 AlertDialog.Builder(this)
                         .setTitle("Androidとコントローラを接続してください。")
                         .setPositiveButton("ok") { dialog, which ->
                         }.show()
-            }else { run() }*/
-            //テス用
+            }else { run() }
+            */
             startActivity(Intent(this@SplashActivity, VorooooonActivity::class.java))
             this@SplashActivity.finish()
+            //*/
         }
-
-        //permission()
-
     }
 
     fun run() {
@@ -63,18 +62,6 @@ class SplashActivity : Activity() {
             }
             startActivity(Intent(this@SplashActivity, VorooooonActivity::class.java))
             this@SplashActivity.finish()
-        }
-    }
-
-    private fun permission() {
-        if (mUsbDevice == null) {
-            return
-        }
-        // シリアル通信用のパーミッションを取得
-        if (!mUsbManager!!.hasPermission(mUsbDevice)) {
-            mUsbManager!!.requestPermission(mUsbDevice,
-                    PendingIntent.getBroadcast(this@SplashActivity, 0, Intent("あ"), 0))
-            return
         }
     }
 }
